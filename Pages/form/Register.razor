@@ -1,0 +1,109 @@
+@page "/register"
+<PageTitle>Register Form</PageTitle>
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow p-4" style="width: 400px;">
+        <h3 class="text-center mb-4">Register Form</h3>
+        <EditForm Model="@user" OnValidSubmit="HandleSubmit">
+            <DataAnnotationsValidator />
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" @bind="@user.UserName" />
+                <ValidationMessage For="@(() => user.UserName)" class="text-danger" />
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" @bind="@user.Email" />
+                <ValidationMessage For="@(() => user.Email)" class="text-danger" />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" @bind="@user.Password" />
+                <ValidationMessage For="@(() => user.Password)" class="text-danger" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Gender</label><br />
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="nam" value="false"
+                        checked="@user.Gender.Equals(false)" @onchange="()=>ChangeGender(false)" />
+                    <label  class="form-check-label" for="nam">Nam</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="nu" value="true"
+                        checked="@user.Gender.Equals(true)" @onchange="()=>ChangeGender(true)" />
+                    <label class="form-check-label" for="nu">Nữ</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Hobbies</label>
+                @foreach (var hobby in allHobbies)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="@user.Hobbies.Contains(hobby)" @onchange="(e)=>ChangeHobbies(hobby,e.Value)"/>
+                        <ValidationMessage For="@(() => user.Hobbies)" class="text-danger" />
+                        <label class="form-check-label" for="@hobby">@hobby</label>
+                    </div>
+                }
+            </div>
+            <div class="mb-3">
+                <label for="country" class="form-label">Country</label>
+                <select class="form-select" id="country" @bind="@user.City">
+                    <option selected>Choose...</option>
+                    <option>USA</option>
+                    <option>Canada</option>
+                    <option>UK</option>
+                    <option>Australia</option>
+                </select>
+            </div>
+            <button class="btn btn-primary w-100">Register</button>
+        </EditForm>
+    </div>
+    <div class="col-6">
+        <h3>Thông tin đăng ký</h3>
+        <p><strong>Username:@user.UserName</strong> </p>
+        <p><strong>Email:@user.Email</strong> </p>
+        <p><strong>Password:@user.Password</strong> </p>
+        <p><strong>Gender:@user.Gender</strong> </p>
+        <p><strong>Hobbies:@string.Join(',', user.Hobbies)</strong> </p>
+        <p><strong>Country:@user.City</strong> </p>
+
+    </div>
+</div>
+
+@code {
+    private List<string> allHobbies = new() { "Ăn uống", "Ngủ", "Chơi game", "Du lịch" };
+    private UserRegisterViewModel user = new UserRegisterViewModel();
+    private void ChangeGender(bool gender)
+    {
+        user.Gender=gender;
+    }
+    private void ChangeHobbies(string hobby, object checkedValue)
+    {
+        bool isChecked = (bool)checkedValue;
+        if (isChecked)
+        {
+            if (!user.Hobbies.Contains(hobby))
+            {
+                user.Hobbies.Add(hobby);
+            }
+        }
+        else
+        {
+            if (user.Hobbies.Contains(hobby))
+            {
+                user.Hobbies.Remove(hobby);
+            }
+        }
+    }
+    private void HandleSubmit()
+    {
+        // Xử lý dữ liệu đăng ký ở đây
+        Console.WriteLine($"Username: {user.UserName}");
+        Console.WriteLine($"Email: {user.Email}");
+        Console.WriteLine($"Password: {user.Password}");
+    }
+}

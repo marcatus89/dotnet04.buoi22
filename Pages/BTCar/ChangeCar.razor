@@ -1,0 +1,67 @@
+@page "/change-car-color"
+<PageTitle>Change Car Color</PageTitle>
+<h3>Change Car Color</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <img src="products/@imgCar" style="width:100%" alt="" class="img-fluid"/>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-danger m-2" @onclick="()=>changeColorRed()">Red</button>
+            <button class="btn btn-secondary m-2" @onclick="()=> changeColorSilver()">Silver</button>
+            <button class="btn btn-dark m-2" @onclick="()=>changeColorBlack()">Black</button>
+            <button class="btn btn-primary m-2" @onclick="()=>changeColorSteel()">Steel</button>
+            <br>
+            @*Dùng vòng lặp của List để hiển thị danh sách màu*@
+            @foreach(var item in dsColor)
+            {
+                <button class="btn btn-light m-2" @onclick="()=>changeColor(item)">@item</button>
+            }
+            <br>
+            @*Dùng vòng lặp của Dictionary để hiển thị danh sách màu*@
+            @foreach(var item in dsColorDic)
+            {
+                <button class="btn @item.Value m-2" @onclick="()=>changeColorDic(item.Key)">@item.Key</button>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    
+    
+    private string imgCar="red-car.jpg";
+    private void changeColorSilver()
+    {
+        imgCar = "silver-car.jpg";
+    }
+    private void changeColorRed()
+    {
+        imgCar = "red-car.jpg";
+    }
+    private void changeColorBlack()
+    {
+        imgCar = "black-car.jpg";
+    }
+    private void changeColorSteel()
+    {
+        imgCar = "steel-car.jpg";
+    }
+    @* danh sách các màu tương ứng==>chạy vòng lặp ở list để hiển thị ra các button *@
+    private List<string> dsColor= new List<string>() { "Red", "Silver", "Black", "Steel" };
+    private void changeColor(string color)
+    {
+        imgCar = $"{color.ToLower()}" + "-car.jpg";
+    }
+     @* danh sách các màu tương ứng==>chạy vòng lặp ở Dictionary để hiển thị ra các button *@
+    private Dictionary<string, string> dsColorDic = new Dictionary<string, string>()
+    {
+        {"Red","btn-danger" },
+        {"Silver","btn-secondary" },
+        {"Black","btn-dark" },
+        {"Steel","btn-primary" }
+    };
+    private void changeColorDic(string color)
+    {
+        imgCar = $"{color.ToLower()}" + "-car.jpg";
+    }
+}
