@@ -20,7 +20,7 @@ public class UserRegisterViewModel
     public string Password { get; set; } = "";
     public bool Gender { get; set; } = false;
 
-    [Required(ErrorMessage = "Vui lòng chọn quốc gia")]
+    [Required(ErrorMessage = "Pls choose the nation")]
     public string City { get; set; } = "";
     public List<string> Hobbies { get; set; } = new List<string>();
 }
